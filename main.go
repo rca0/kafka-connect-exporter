@@ -11,6 +11,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/collectors"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	collector "github.com/rca0/kafka-connect-exporter/app/collector"
+	"github.com/rca0/kafka-connect-exporter/misc"
 	"github.com/sirupsen/logrus"
 )
 
@@ -54,7 +56,7 @@ func main() {
 	registeredURIs := make(map[string]bool)
 
 	for _, u := range uris {
-		co := collector.NewGoCollector(u, nameSpace)
+		co := collector.NewCollector(u, nameSpace)
 		if _, ok := registeredURIs[u]; !ok {
 			if err := tryRegister(co); err != nil {
 				logrus.Errorf("error entering metric for URI: %s\n, error %v", u, err)
